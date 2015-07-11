@@ -1,2 +1,2 @@
-env/
-secrets.sh
+venv
+*.pyc

@@ -39,6 +39,7 @@ def process_signup():
     """Route to process login for users."""
 
     entered_email = request.form['email']
+    phone = request.form['phone']
     entered_pw = request.form['password']
     entered_pw2 = request.form['password2']
 
@@ -50,7 +51,7 @@ def process_signup():
         flash("Hmm...we already have your email account on file. Please log in.")
         return redirect("/login")
     else:
-        new_user = User(password=entered_pw, email=entered_email)
+        new_user = User(password=entered_pw, email=entered_email, phone=phone)
         db.session.add(new_user)
         db.session.commit()
         return redirect('/')

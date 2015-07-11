@@ -2,43 +2,42 @@ import requests
 import os
 import json
 
-pg_token=os.environ['PAGERDUTY_TOKEN']
+PG_TOKEN=os.environ['PAGERDUTY_TOKEN']
+FP_SERVICE_KEY=os.environ['FIND_PARTNER_SERVICE_KEY']
+FP_API_KEY=os.environ['FIND_PARTNER_API_KEY']
 
-partner_service_key=os.environ['FIND_PARTNER_SERVICE_KEY']
-partner_api_key=os.environ['FIND_PARTNER_API_KEY']
-
-headers = {'Accept': 'application/json', 
-        'Authorization' : 'Token token=%s' % pg_token}
-
-print pg_token
-
-test_url = "https://apitester.pagerduty.com/api/v1/users"
-
-get_request = requests.get(test_url, 
-                        headers=headers
-                        )
-                        # verify=True)
-
-# post_request = requests.post("", headers=headers, data=)
-
-trigger_url = 'https://empowerwalk.pagerduty.com/services/PSSZYG8'
-trigger_data = { 
-          "service_key": service_key,
-          "incident_key": "srv01/HTTP",
-          "event_type": "trigger",
-          "description": "Find me a partner please",
-          "client": "Sample Partnering Service",
-          "client_url": "/",
-          "details": {"ping time": "1500ms",
-                      "load avg": 0.75 }, 
-          "contexts":[{"type": "link",
-                       "href": "http://empowerwalk.pagerduty.com"}] 
-            }
+def testing(token):
+    """Test API call using generic PG Token"""
+    headers_api_test = {'Accept': 'application/json', 
+                        'Authorization' : 'Token token=%s' % token}
+    test_url = "https://apitester.pagerduty.com/api/v1/users"
+    get_request = requests.get(test_url, 
+                            headers=headers_api_test
+                            )
+    return get_request
 
 
-trigger_request = requests.post(trigger_url, headers=headers, data=json.dumps(trigger_data))
+def trigger_fp():
+    """Trigger Incident for Find Partner Service"""
+    trigger_url = 'https://empowerwalk.pagerduty.com/services/PSSZYG8'
 
- # #Here is the info one can get about users, info can also be inserted
-    # #alerts can also be found and inserted
-    # users = response.json()['users']
-    # print "USERS OBJECTS IN LIST: ", users
+    trigger_headers = {'Accept': 'application/json', 
+            'Authorization' : 'Token token=%s' % FP_API_KEY}
+
+    trigger_data = { 
+              "service_key": FP_SERVICE_KEY,
+              "incident_key": "srv01/HTTP",
+              "event_type": "trigger",
+              "description": "Find me a partner please",
+                }
+
+    trigger_request = requests.post(trigger_url, 
+                                    headers=trigger_headers, 
+                                    data=json.dumps(trigger_data))
+
+    return trigger_request
+
+
+if __name__ == "__main__":
+    test = testing(PG_TOKEN)
+    trigger = trigger_fp()

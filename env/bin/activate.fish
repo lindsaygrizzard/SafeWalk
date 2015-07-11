@@ -32,7 +32,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/lindsaygrizzard/Desktop/safe_walk/env"
+set -gx VIRTUAL_ENV "/Users/Natalie/Documents/hackbright-src/SafeWalk/env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

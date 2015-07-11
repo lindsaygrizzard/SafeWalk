@@ -1,37 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery.js"></script>
-  <link rel="stylesheet" href="/static/styles.css">
-  <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,500' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
-  {% block head %} 
-    <title>{% block title %}{% endblock %} | SafeWalk </title>
-  {% endblock %}
-</head>
+
+  <head>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuNv11mCAnVkv77bxGj5zfaeflXsYLsV4">
+</script>
+
+<script>
+// render google map
+
+var pos;
+
+function initialize() {
+
+  if (navigator.geolocation) {
+      console.log("navigator data?")
+        navigator.geolocation.getCurrentPosition(show_position);
+
+  var myLatlng = new google.maps.LatLng(37.7686922,-122.4417199,13);
+  var mapOptions = {
+    zoom: 14,
+    center: pos,
+    navigationControlOptions: {
+      style: google.maps.NavigationControlStyle.MEDIUM
+      }
+  }
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    } 
+}
+  
+function show_position(p)
+{
+  pos=new google.maps.LatLng(p.coords.latitude,p.coords.longitude);
+  map.setCenter(pos);
+  map.setZoom(14);
+  console.log(pos);
+  console.log("postion data?")
 
 
-<header>
-  <nav id="nav-bar">
-    <a href ='/' class="head-nav"> SafeWalk </a> 
-    <a href ='/user-profile' class="head-nav"> My Trips </a>
-    {% if "email" not in session %}
-        <a href ='/register' class="head-nav">Register </a>
-    {% endif %}
-    <a href = '/logout' class="head-nav">Logout </a>
-    <a href = '/login' class="head-nav">Login </a> 
-  <nav>
-</header>
+  var marker = new google.maps.Marker({
+      position: pos,
+      map: map,
+      title:"You are here"
+  });
+  
+}
+
+// render map on div
+google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+ 
+  <style type="text/css">html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}</style>
+
+  </head>
+
 <body>
-<!-- Show flashed messages -->
-
-    <h3> users test = {# users #} </h3>
-
-    {% block content %}
-        put content here
-    {% endblock %}
+  
+  
+  <div id="map-canvas"></div>
 
 </body>
+
+
 </html>
+

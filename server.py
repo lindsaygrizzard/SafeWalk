@@ -12,11 +12,11 @@ def index():
 
     """Homepage."""
 
-    if 'email' not in session:
-        flash('You must Log In or Register before viewing projects')
-        return redirect('/login')
-    else:
-        flash('Hello %s' % session['email'])
+    # if 'email' not in session:
+    #     flash('You must Log In or Register before viewing projects')
+    #     return redirect('/login')
+    # else:
+    #     flash('Hello %s' % session['email'])
     return render_template('index.html')
 
 
@@ -56,6 +56,7 @@ def process_signup():
         db.session.commit()
         return redirect('/')
 
+
 @app.route("/login")
 def user_login():
 
@@ -64,26 +65,32 @@ def user_login():
     return render_template("login.html")
 
 
-@app.route("/login-process", methods=['POST'])
+@app.route("/process_login", methods=["POST", "GET"])
 def process_login():
+    """GET - displays a form that asks for email and password
+        POST - collects that data and authenticates --> redirect to user profile"""
 
-    """Route to process login for users."""
+    if request.method == "POST":
+        email = request.form["email"]
+        print "Email: ", email
+        password = request.form["password"]
+        user_object = User.query.filter(User.email == email).first()
+        print "USER OBECT", user_object
 
-    entered_email = request.form['email']
-    entered_pw = request.form['password']
-
-    user = User.query.filter_by(email=entered_email).first()
-
-    if user:
-        if entered_pw == user.password:
-            session['email'] = request.form['email']
-            return redirect("/")
+        if user_object:
+            if user_object.password == password:
+                session["email"] = email
+                flash("You logged in successfully")
+                return redirect("/")
+            else:
+                flash("Incorrect password. Try again.")
+                return redirect("/login")
         else:
-            flash("That is not the correct password!")
-            return redirect('/login')
-    else:
-        flash('That information was not found')
-        return redirect('login')
+            flash("We do not have this email on file. Click Register if you would like to create an account.")
+            return redirect("/login")
+
+    return render_template("login.html")
+        ###
 
 
 @app.route("/logout")

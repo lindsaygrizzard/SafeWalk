@@ -119,15 +119,16 @@ def process_logout():
     return redirect("/")
 
 
-@app.route("/register_location")
+@app.route("/register_location", methods = ["POST"])
 def register_route():
 
     """Add user's origin and destination to Route table"""
+    print request.form
+    origin = request.form["marker1[latitude]"]
+    # destination = request.args["json.marker1"]
 
-    origin = request.args.get("marker1")
-    destination = request.args.get("marker2")
-
-    print marker1, marker2
+    print origin, "*******************"
+    return ""
 
 
 
@@ -189,6 +190,15 @@ def match_walkers():
 
 
 
+##################################
+    # Finish Walk #
+##################################
+@app.route("/finish", methods=['GET'])
+def finish_walk():
+    """After the user finishes her walk, take her to the rating form"""
+
+
+    return redirect("/rating")
 
 ##################################
     # Rate walking companion #
@@ -202,6 +212,8 @@ def rate_user():
         user = User.query.filter_by(email=user_email).first()
 
         scored_user_id = request.form['scored_user_id']
+        scored_user_id = request.form['scored_user_id']
+        scored_user = User.query.get(int(scored_user_id))
         safety_score = request.form['safety']
         respect_score = request.form['respect']
 
@@ -216,13 +228,22 @@ def rate_user():
         #     article.tag_list.append(tag)
 
         # db.session.commit()
+        scored_user.set_rating(overall_rating)
+        db.session.commit()
 
         return redirect("/")
 
     else:
         return render_template("rating.html")
 
-
+##################################
+    # Invite a Friend #
+##################################
+@app.route("/invite", methods=['GET'])
+def invite_friend():
+    """Invite a friend to the app"""
+    
+    return render_template("invite.html")
 
 if __name__ == "__main__":
     app.debug = True

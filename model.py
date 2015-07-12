@@ -35,7 +35,8 @@ class Route(db.Model):
 
     __tablename__ = "routes"
 
-    user_id = db.Column(db.Integer, primary_key=True, db.ForeignKey('users.user_id'))
+    route_id =  db.Column(db.Integer, autoincrement=True, primary_key=True)
+    route_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     start_lat = db.Column(db.Float)
     start_long = db.Column(db.Float)
     end_lat = db.Column(db.Float)

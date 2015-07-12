@@ -114,15 +114,27 @@ def register_route():
 
     """Add user's origin and destination to Route table"""
     print request.form
-    origin = request.form["marker1[latitude]"]
-    # destination = request.args["json.marker1"]
+    originlat = request.form["marker1[latitude]"]
+    originlng = request.form["marker1[longitude]"]
+    destinationlat = request.form["marker2[latitude]"]
+    destinationlng = request.form["marker2[longitude]"]
 
-    print origin, "*******************"
+    print "here"
+    user_obj = User.query.filter(User.email == session['email']).first()
+    user_id = user_obj.user_id
+
+    user_route = Route(route_user_id = user_id,
+                        start_lat = originlat,
+                        start_long = originlng,
+                        end_lat = destinationlat,
+                        end_long = destinationlng)
+
+    db.session.add(user_route)
+    db.session.commit()
+   
     return ""
 
 
-
-# on call --- enter route data
 # not on call --- delete route data
 
 

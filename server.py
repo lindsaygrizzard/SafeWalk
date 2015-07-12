@@ -4,6 +4,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Route
 from call import send_sms
 from haversine import haversine
+from call import send_sms
+import call
 
 app = Flask(__name__)
 app.secret_key = 'public key'
@@ -17,10 +19,19 @@ def index():
     if 'email' not in session:
         flash('You must Log In or Register before viewing projects')
         return redirect('/login')
-    else:
-        flash('Hello %s' % session['email'])
 
     return render_template('index.html')
+
+
+@app.route('/call', methods=["POST"])
+def call():
+    """Make twilio call"""
+
+    # query for the chosen other user
+    send_sms()
+    return "Success"
+
+
 
 ###########
 #how do I make another route that will activate call.py on the index page?
@@ -85,7 +96,6 @@ def process_login():
     if user_object:
         if user_object.password == password:
             session["email"] = email
-            flash("You logged in successfully")
             return redirect("/")
         else:
             flash("Incorrect password. Try again.")
@@ -192,6 +202,15 @@ def match_walkers():
 
 
 
+##################################
+    # Finish Walk #
+##################################
+@app.route("/finish", methods=['GET'])
+def finish_walk():
+    """After the user finishes her walk, take her to the rating form"""
+
+
+    return redirect("/rating")
 
 ##################################
     # Rate walking companion #
@@ -201,12 +220,12 @@ def match_walkers():
 def rate_user():
 
     if request.method == "POST":
-        # user_email = session['email']
-        # user = User.query.filter_by(email=user_email).first()
+        user_email = session['email']
+        user = User.query.filter_by(email=user_email).first()
 
         scored_user_id = request.form['scored_user_id']
-        scored_user = User.query.get(scored_user_id)
-
+        scored_user_id = request.form['scored_user_id']
+        scored_user = User.query.get(int(scored_user_id))
         safety_score = request.form['safety']
         respect_score = request.form['respect']
 
@@ -214,7 +233,13 @@ def rate_user():
 
         print overall_rating
 
-        score_user.set_walk_count()
+        # article = Article.query.filter_by(title=title).first()
+        # for tag_name in tags:
+        #     print tag_name
+        #     tag = Tag.query.filter_by(tag_name=tag_name).first()
+        #     article.tag_list.append(tag)
+
+        # db.session.commit()
         scored_user.set_rating(overall_rating)
         db.session.commit()
 
@@ -223,7 +248,14 @@ def rate_user():
     else:
         return render_template("rating.html")
 
-
+##################################
+    # Invite a Friend #
+##################################
+@app.route("/invite", methods=['GET'])
+def invite_friend():
+    """Invite a friend to the app"""
+    
+    return render_template("invite.html")
 
 if __name__ == "__main__":
     app.debug = True

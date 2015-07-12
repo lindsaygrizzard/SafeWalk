@@ -4,6 +4,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
+    """Table of users"""
 
     __tablename__ = "users"
 
@@ -19,6 +20,31 @@ class User(db.Model):
 
         return "<User user_id:  %s | email: %s>" % (self.user_id, self.email)
 
+    @property
+    def rating_avg(self):
+        rating_sum = 0
+        for rating in self.ratings:
+            rating_sum += rating
+
+        return rating_sum / len(self.ratings)
+
+
+class Rating(db.Model):
+    """Table of ratings"""
+
+    __tablename__ = "ratings"
+
+    rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    rating_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    rated_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+
+    user = db.relationship("User", backref=db.backref("ratings", order_by=rating_id))
+
+    def __repr__(self):
+
+        """Provide helpful representation when printed"""
+
+        return "<Rating rating_id:  %s >" % (self.rating_id)
 
 #############################
 def connect_to_db(app):

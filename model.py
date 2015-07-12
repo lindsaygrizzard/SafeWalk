@@ -2,6 +2,13 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+# FIX: Might need an Association table set up like this instead:
+# # Association Table of Ratings and Users
+rating_list = db.Table('rating_list',
+    db.Column("rating_id", db.Integer, autoincrement=True, primary_key=True),
+    db.Column('primary_user_id', db.Integer, db.ForeignKey('users.user_id')),
+    db.Column('seconday_user_id', db.Integer, db.ForeignKey('users.user_id'))
+)
 
 class User(db.Model):
     """Table of users"""
@@ -45,31 +52,24 @@ class Route(db.Model):
     user = db.relationship("User", backref = db.backref("routes"))
 
 
-class Rating(db.Model):
-    """Table of ratings"""
+# class Rating(db.Model):
+#     """Table of ratings"""
 
-    __tablename__ = "ratings"
+#     __tablename__ = "ratings"
 
-    rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    rating_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    scored_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    score = db.Column(db.Integer)
+#     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     rating_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+#     scored_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+#     score = db.Column(db.Integer)
 
-    user = db.relationship("User", backref=db.backref("ratings", order_by=rating_id))
+#     user = db.relationship("User", backref=db.backref("ratings", order_by=rating_id))
 
-    def __repr__(self):
+#     def __repr__(self):
 
-        """Provide helpful representation when printed"""
+#         """Provide helpful representation when printed"""
 
-        return "<Rating rating_id:  %s >" % (self.rating_id)
+#         return "<Rating rating_id:  %s >" % (self.rating_id)
 
-# FIX: Might need an Association table set up like this instead:
-# # Association Table of Ratings and Users
-# rating_list = db.Table('rating_list',
-#     db.Column("rating_id", db.Integer, autoincrement=True, primary_key=True),
-#     db.Column('primary_user_id', db.Integer, db.ForeignKey('users.user_id')),
-#     db.Column('seconday_user_id', db.Integer, db.ForeignKey('users.user_id'))
-# )
 
 #############################
 def connect_to_db(app):
@@ -77,13 +77,32 @@ def connect_to_db(app):
 
     # Configure to use our SQLite database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///empowerwalk.db'
+<<<<<<< HEAD
+    app.config['SQLALCHEMY_ECHO'] = False
+=======
     app.config['SQLALCHEMY_ECHO'] = True
+>>>>>>> 6d6e65d22cad78c23ef9b94660b431d7f303a64d
     db.app = app
     db.init_app(app)
 
+def seed_users():
+    l = User(email = 'lindsay@gmail.com',
+            password = 'abc',
+            phone = '+16617946615',
+            zipcode='94110')
+    db.session.add(l)
+
+    n = User(email = 'natalie@gmail.com',
+            password = 'abc',
+            phone = '+14157024046',
+            zipcode='94110')
+
+    db.session.add(n)
+    db.session.commit()
 
 if __name__ == "__main__":
     from server import app
     connect_to_db(app)
     print "Connected to DB."
-
+    #seed_users()
+    #print "Seeded 2 beta users."

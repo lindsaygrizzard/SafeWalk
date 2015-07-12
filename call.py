@@ -6,7 +6,11 @@ import os
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
 
-def send_sms(caller, receiver, message):
+default_caller=os.environ['LG']
+default_receiver=os.environ['AP']
+default_message="I will walk with you on emPOWERwalk."
+
+def send_sms(caller=default_caller, receiver=default_receiver, message=default_message):
     try:
         client = twilio.rest.TwilioRestClient(account_sid, auth_token)
         message = client.messages.create(
@@ -18,7 +22,5 @@ def send_sms(caller, receiver, message):
         print e
 
 if __name__ == "__main__":
-    default_caller=os.environ['LG']
-    default_receiver=os.environ['AP']
-    default_message="I will walk with you on emPOWERwalk."
+
     send_sms(default_caller, default_receiver, default_message)

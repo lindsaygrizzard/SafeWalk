@@ -51,6 +51,12 @@ class Route(db.Model):
 
     user = db.relationship("User", backref = db.backref("routes"))
 
+    def __repr__(self):
+
+        """Provide helpful representation when printed"""
+
+        return "<Route route_id:  %s | user_id: %s>" % (self.route_id, self.route_user_id)
+
 
 # class Rating(db.Model):
 #     """Table of ratings"""
@@ -77,11 +83,8 @@ def connect_to_db(app):
 
     # Configure to use our SQLite database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///empowerwalk.db'
-<<<<<<< HEAD
     app.config['SQLALCHEMY_ECHO'] = False
-=======
-    app.config['SQLALCHEMY_ECHO'] = True
->>>>>>> 6d6e65d22cad78c23ef9b94660b431d7f303a64d
+
     db.app = app
     db.init_app(app)
 
@@ -104,5 +107,7 @@ if __name__ == "__main__":
     from server import app
     connect_to_db(app)
     print "Connected to DB."
-    #seed_users()
-    #print "Seeded 2 beta users."
+    db.create_all()
+    print "Created all tables"
+    seed_users()
+    print "Seeded 2 beta users."

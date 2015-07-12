@@ -116,15 +116,15 @@ def process_logout():
     return redirect("/")
 
 
-@app.route("/register_location", methods = ["POST"])
+@app.route("/register_location", methods = ["GET"])
 def register_route():
 
     """Add user's origin and destination to Route table"""
-    print request.form
-    originlat = request.form["marker1[latitude]"]
-    originlng = request.form["marker1[longitude]"]
-    destinationlat = request.form["marker2[latitude]"]
-    destinationlng = request.form["marker2[longitude]"]
+    print request.args
+    originlat = request.args["marker1[latitude]"]
+    originlng = request.args["marker1[longitude]"]
+    destinationlat = request.args["marker2[latitude]"]
+    destinationlng = request.args["marker2[longitude]"]
 
     print "here"
     user_obj = User.query.filter(User.email == session['email']).first()
@@ -145,7 +145,7 @@ def register_route():
 # not on call --- delete route data
 
 
-@app.route("/match_walkers", methods = ["POST"])
+@app.route("/match_walkers")
 def match_walkers():
 
     """Filter on call users to match together based on proximity of origin and destination"""
@@ -197,16 +197,15 @@ def match_walkers():
 
     if matches:
         matches.sort()
-        print matches
+        print matches, "*****************"
 
         close_matches = []
-        for i in range(4):
-            user_id = matches[i][1]
-            user_obj = User.query.get(user_id).first()
-            a = user_obj.__dict__
-            if '_sa_instance_state' in a:
-                a.pop('_sa_instance_state')
-            close_matches.append(a)
+        user_id = matches[0][1]
+        user_obj = User.query.get(user_id)
+        a = user_obj.__dict__
+        if '_sa_instance_state' in a:
+            a.pop('_sa_instance_state')
+        close_matches.append(a)
 
     return close_matches
 

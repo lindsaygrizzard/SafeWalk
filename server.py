@@ -139,60 +139,76 @@ def register_route():
     db.session.add(user_route)
     db.session.commit()
    
-    return ""
+    return redirect("/match_walkers")
 
 
 # not on call --- delete route data
 
 
-@app.route("/match_walkers")
+@app.route("/match_walkers", methods = ["POST"])
 def match_walkers():
 
     """Filter on call users to match together based on proximity of origin and destination"""
 
-    user_origin_lat = 5
-    user_origin_lng = 4
+    user_obj = User.query.filter(User.email == session['email']).first()
+    user_route = user_obj.routes
+    user_route = user_route[0]
+    print "user route ", user_route
+    
+    user_origin_lat = user_route.start_lat
+    user_origin_lng = user_route.start_long
 
-    user_destination_lat = 5
-    user_destination_lng = 4
+    user_destination_lat = user_route.end_lat
+    user_destination_lng = user_route.end_long
 
     lat_range = .00724
     lng_range = .00943
 
     matches = []
 
-    for other_user in route_table:
-        if (other_user.origin_lat < user_origin_lat + lat_range and
-            other_user.origin_lat > user_origin_lat - lat_range and
-            other_user.origin_lng < user_origin_lng + lng_range and
-            other_user.origin_lng > user_origin_lng - lng_range and
-            other_user.destination_lat < user_destination_lat + lat_range and
-            other_user.destination_lat > user_destination_lat - lat_range and
-            other_user.destination_lng < user_destination_lng + lng_range and
-            other_user.destination_lng > user_destination_lng - lng_range):
-            # calculate distance using haversine and store dist and match id
+    other_users = Route.query.all()
+    print "other user routes ", other_users
 
-            other_user_origin = (other_user.origin_lat, other_user.origin_lng)
-            other_user_destination = (other_user.destination_lat, other_user.destination_lng)
-            user_origin = (user_origin_lat, user_origin_lng)
-            user_destination = (user_destination_lat, user_destination_lng)
+    for other_user in other_users:
+        if other_user.route_user_id != user_obj.user_id:
+            if (other_user.start_lat < user_origin_lat + lat_range and
+                other_user.start_lat > user_origin_lat - lat_range and
+                other_user.start_long < user_origin_lng + lng_range and
+                other_user.start_long > user_origin_lng - lng_range and
+                other_user.end_lat < user_destination_lat + lat_range and
+                other_user.end_lat > user_destination_lat - lat_range and
+                other_user.end_long < user_destination_lng + lng_range and
+                other_user.end_long > user_destination_lng - lng_range):
+                # calculate distance using haversine and store dist and match id
+
+                other_user_origin = (other_user.start_lat, other_user.start_long)
+                other_user_destination = (other_user.end_lat, other_user.end_long)
+                user_origin = (user_origin_lat, user_origin_lng)
+                user_destination = (user_destination_lat, user_destination_lng)
 
 
-            origin_difference = haversine(other_user_origin, user_origin)
-            destination_difference = haversine(other_user_destination, user_destination)
+                origin_difference = haversine(other_user_origin, user_origin)
+                destination_difference = haversine(other_user_destination, user_destination)
 
-            total = origin_difference + destination_difference
-            matches.append((total, other_user_id))
+                total = origin_difference + destination_difference
+                matches.append((total, other_user.route_user_id))
+        else:
+            print "no matches"
 
-    matches.sort()
+    if matches:
+        matches.sort()
+        print matches
 
-    close_matches = []
-    for i in range(4):
-        user_id = matches[i][1]
-        match_phone = query_for_match_phone
-        match_name = query_for_match_name
-        match_photo = query_for_match_photo
-        close_matches.append((user_id, match_phone, match_name, match_photo))
+        close_matches = []
+        for i in range(4):
+            user_id = matches[i][1]
+            user_obj = User.query.get(user_id).first()
+            a = user_obj.__dict__
+            if '_sa_instance_state' in a:
+                a.pop('_sa_instance_state')
+            close_matches.append(a)
+
+    return close_matches
 
 
     # query by match id (in order - lowest 5) - get contacts --> initialize twilio contact

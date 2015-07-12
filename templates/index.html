@@ -73,10 +73,12 @@ function initialize() {
         url: "/register_location",
         data: position,
         dataType: "json",
-        success: function (data) {
-          console.log("data string " + data);
-        }
-      })  
+        success: close_matches
+      })
+
+  function close_matches(data) {
+    console.log(data);
+  }
 
     map.fitBounds(bounds);
   });

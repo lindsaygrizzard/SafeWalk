@@ -36,7 +36,8 @@ class Rating(db.Model):
 
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     rating_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    rated_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    scored_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    overall_rating = db.Column(db.Integer)
 
     user = db.relationship("User", backref=db.backref("ratings", order_by=rating_id))
 

@@ -106,6 +106,31 @@ def process_logout():
     flash('You successfully logged out!')
     return redirect("/")
 
+##################################
+    # Rate walking companion #
+##################################
+
+@app.route("/rating", methods=["POST"])
+def rate_user():
+    user_email = session['email']
+    user = User.query.filter_by(email=user_email).first()
+
+    scored_user_id = request.form['scored_user_id']
+    safety_score = request.form['safety']
+    respect_score = request.form['respect']
+
+    overall_rating = (0.7 * int(safety_score)) + (0.3 * int(friendly_score))
+
+    new_rating_entry = Rating(rating_user_id=user, 
+                        scored_user_id=scored_user_id, 
+                        overall_rating=int(overall_rating))
+
+    db.session.add(new_rating_entry)
+    db.session.commit()
+
+    return redirect("/")
+
+
 
 if __name__ == "__main__":
     app.debug = True

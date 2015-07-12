@@ -4,6 +4,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Route
 from call import send_sms
 from haversine import haversine
+from call import send_sms
+import call
 
 app = Flask(__name__)
 app.secret_key = 'public key'
@@ -17,10 +19,18 @@ def index():
     if 'email' not in session:
         flash('You must Log In or Register before viewing projects')
         return redirect('/login')
-    else:
-        flash('Hello %s' % session['email'])
 
     return render_template('index.html')
+
+
+@app.route('/call', methods=["POST"])
+def call():
+    """Make twilio call"""
+
+    send_sms()
+    return "Success"
+
+
 
 ###########
 #how do I make another route that will activate call.py on the index page?
@@ -85,7 +95,6 @@ def process_login():
     if user_object:
         if user_object.password == password:
             session["email"] = email
-            flash("You logged in successfully")
             return redirect("/")
         else:
             flash("Incorrect password. Try again.")

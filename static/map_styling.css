@@ -70,6 +70,14 @@ font-size: 13px;
 font-weight: 300;
 }
 
+a {
+    color: black
+}
+
+a#rating {
+    text-decoration: none;
+    color: red;
+}
 
 @media only screen and (max-width: 880px) {
     div#cover{

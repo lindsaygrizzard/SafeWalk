@@ -2,10 +2,8 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Route
-from call import send_sms
 from haversine import haversine
 from call import send_sms
-import call
 
 app = Flask(__name__)
 app.secret_key = 'public key'
@@ -24,10 +22,8 @@ def index():
 
 
 @app.route('/call', methods=["POST"])
-def call():
+def caller():
     """Make twilio call"""
-
-    # query for the chosen other user
     send_sms()
     return "Success"
 

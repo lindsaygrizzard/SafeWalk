@@ -23,9 +23,9 @@ class User(db.Model):
     #avg_rating = 0
 
     # db.relationship("rating_list", 
-                            secondary=rating_list, 
-                            backref=db.backref("rating_list", 
-                                                order_by=primary_user_id))
+                            # secondary=rating_list, 
+                            # backref=db.backref("rating_list", 
+                            #                     order_by=primary_user_id))
 
     def __repr__(self):
 

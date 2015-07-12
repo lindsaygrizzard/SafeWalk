@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="/static/register.css">
+    <link rel="stylesheet" type="text/css" href="/static/rating.css">
 {% endblock %}
 
 {% block content %}
 
 <div class="container">
     <h1 class = "title"> Rate your companion</h1>
-    <form action ="/process_login" method = "POST">
+    <form action ="/rating" method = "POST">
         <fieldset>
             <h3>Friendliness Rating</h3>
             <span class="respect-rating" id="respect-rating">
@@ -18,7 +18,6 @@
               <input type="radio" name="rating" value="4"><i></i>
               <input type="radio" name="rating" value="5"><i></i>
             </span>
-            <strong class="choice">Choose a rating</strong>
 
             <h3>Saftey rating </h3>
             <span class="saftey-rating" id="saftey-rating">
@@ -27,8 +26,7 @@
               <input type="radio" name="rating" value="3"><i></i>
               <input type="radio" name="rating" value="4"><i></i>
               <input type="radio" name="rating" value="5"><i></i>
-            </span>
-            <strong class="choice">Choose a rating</strong>
+              </span>
             <p><input type="submit" value="Rate this Walk"></p>
     </form>
 </div>

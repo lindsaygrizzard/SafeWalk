@@ -77,11 +77,7 @@ def connect_to_db(app):
 
     # Configure to use our SQLite database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///empowerwalk.db'
-<<<<<<< HEAD
     app.config['SQLALCHEMY_ECHO'] = False
-=======
-    app.config['SQLALCHEMY_ECHO'] = True
->>>>>>> 6d6e65d22cad78c23ef9b94660b431d7f303a64d
     db.app = app
     db.init_app(app)
 

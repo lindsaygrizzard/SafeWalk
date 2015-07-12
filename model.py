@@ -19,7 +19,6 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
     phone = db.Column(db.String(15), nullable=True)
-    zipcode = db.Column(db.String(15), nullable=True)
 
     def __repr__(self):
 
@@ -69,7 +68,6 @@ class Route(db.Model):
 #         """Provide helpful representation when printed"""
 
 #         return "<Rating rating_id:  %s >" % (self.rating_id)
-
 
 #############################
 def connect_to_db(app):

@@ -197,10 +197,12 @@ def match_walkers():
 def rate_user():
 
     if request.method == "POST":
-        user_email = session['email']
-        user = User.query.filter_by(email=user_email).first()
+        # user_email = session['email']
+        # user = User.query.filter_by(email=user_email).first()
 
         scored_user_id = request.form['scored_user_id']
+        scored_user = User.query.get(scored_user_id)
+
         safety_score = request.form['safety']
         respect_score = request.form['respect']
 
@@ -208,13 +210,9 @@ def rate_user():
 
         print overall_rating
 
-        # article = Article.query.filter_by(title=title).first()
-        # for tag_name in tags:
-        #     print tag_name
-        #     tag = Tag.query.filter_by(tag_name=tag_name).first()
-        #     article.tag_list.append(tag)
-
-        # db.session.commit()
+        score_user.set_walk_count()
+        scored_user.set_rating(overall_rating)
+        db.session.commit()
 
         return redirect("/")
 

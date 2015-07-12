@@ -153,7 +153,7 @@ def match_walkers():
     matches.sort()
 
     close_matches = []
-    for i in range(4)
+    for i in range(4):
         user_id = matches[i][1]
         match_phone = query_for_match_phone
         match_name = query_for_match_name

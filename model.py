@@ -42,6 +42,8 @@ class Route(db.Model):
     end_lat = db.Column(db.Float)
     end_long = db.Column(db.Float)
 
+    user = db.relationship("User", backref = db.backref("routes"))
+
 
 class Rating(db.Model):
     """Table of ratings"""
@@ -74,7 +76,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our SQLite database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///empowerwalk.db   '
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///empowerwalk.db'
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)

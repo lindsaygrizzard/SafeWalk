@@ -109,15 +109,16 @@ def process_logout():
     return redirect("/")
 
 
-@app.route("/register_location")
+@app.route("/register_location", methods = ["POST"])
 def register_route():
 
     """Add user's origin and destination to Route table"""
+    print request.form
+    origin = request.form["marker1[latitude]"]
+    # destination = request.args["json.marker1"]
 
-    origin = request.args.get("marker1")
-    destination = request.args.get("marker2")
-
-    print marker1, marker2
+    print origin, "*******************"
+    return ""
 
 
 

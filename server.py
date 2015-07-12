@@ -60,12 +60,13 @@ def process_signup():
     phone = request.form['phone']
     entered_pw = request.form['password']
     entered_pw2 = request.form['password2']
+    invite_code = request.form['invite']
 
     if User.query.filter_by(email=email).first():
         flash("A user already exists with this email")
         return render_template("register.html")
     else:
-        new_user = User(password=entered_pw, email=email, phone=phone)
+        new_user = User(password=entered_pw, email=email, phone=phone, invite_code=invite_code)
         db.session.add(new_user)
         db.session.commit()
         if not session.get('new_user.email'):

@@ -4,11 +4,11 @@ db = SQLAlchemy()
 
 # FIX: Might need an Association table set up like this instead:
 # # Association Table of Ratings and Users
-rating_list = db.Table('rating_list',
-    db.Column("rating_id", db.Integer, autoincrement=True, primary_key=True),
-    db.Column('primary_user_id', db.Integer, db.ForeignKey('users.user_id')),
-    db.Column('seconday_user_id', db.Integer, db.ForeignKey('users.user_id'))
-)
+# rating_list = db.Table('rating_list',
+#     db.Column("rating_id", db.Integer, autoincrement=True, primary_key=True),
+#     db.Column('primary_user_id', db.Integer, db.ForeignKey('users.user_id')),
+#     db.Column('seconday_user_id', db.Integer, db.ForeignKey('users.user_id'))
+# )
 
 class User(db.Model):
     """Table of users"""
@@ -19,29 +19,30 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
     phone = db.Column(db.String(15), nullable=True)
+    rating = db.Column(db.Integer, default=5)
+    walk_count = db.Column(db.Integer, default=0)
 
-    #avg_rating = 0
+    def get_walk_count(self):
+        return self.walk_count
 
-    # db.relationship("rating_list", 
-                            # secondary=rating_list, 
-                            # backref=db.backref("rating_list", 
-                            #                     order_by=primary_user_id))
+    def set_walk_count(self):
+        self.walk_count += 1
+        db.session.commit()
+    
+    def get_rating(self):
+        return self.rating
+
+    def set_rating(self, new_score):
+        new_total = self.get_rating + new_score
+        average_score = new_total / self.get_walk_count
+        self.rating = average_score
+        db.session.commit()
 
     def __repr__(self):
 
         """Provide helpful representation when printed"""
 
         return "<User user_id:  %s | email: %s>" % (self.user_id, self.email)
-
-    @property
-    def rating_avg(self):
-        rating_sum = 0
-        for rating in self.ratings:
-            rating_sum += rating.score
-
-        rating_avg = rating_sum / len(self.ratings)
-        
-        return rating_avg
 
 class Route(db.Model):
     """Table of routes"""

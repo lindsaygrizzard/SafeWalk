@@ -115,9 +115,8 @@ function show_position(p)
       '</div>'+
       '<h3 id="firstHeading" class="firstHeading">This is you</h3>'+
       '<div id="bodyContent">'+
-      '<p>Find another person near you and contact them by ' +
-      'selecting their flag, deciding if you would like to walk with them'+
-      'and clicking the call button '+
+      '<p>Contact another person going your way by ' +
+      'clicking the call button. Then rate them after the walk! '+
       '</p>'+
       '</div>'+
       '</div>';
@@ -153,21 +152,21 @@ google.maps.event.addDomListener(window, 'load', initialize);
 {% endblock %}
 
 {% block content %}
-
   
-  <input id="destination" class="controls" type="text" placeholder="Where are you headed?">
+   <div id="cover">
+    <input id="destination" class="controls" type="text" placeholder="Where are you headed?"><br>
 
-  <div id="cover">
-    <input id="destination" class="controls" type="text" value="Message a Walking Buddy!">
-    <input id="submited" class="submit" type="submit" value="Send!"><br>
-    <input href="/rating" id="rating" class="rating" type="submit" value="Rate Your Walk!">
+    <input id="destination" class="controls" type="text" value="Message a Walking Buddy!"><br>
+    <a href="/rating" id="rating" class="rating" value="Rate Your Walk!">Rate Your Walk!<a>
+    <input id="submited" class="submit" type="submit" value="Send!">
   </div>
 
-  <script>
-    $( "#submited" ).click(function() {
-      $.post("/call");
+ <script>
+    $( "#submited" ).on( "click", function() {
+      $.post("/call", function() {
+      console.log("SENT!!"); 
+      };
     });
-
  </script>
 
 

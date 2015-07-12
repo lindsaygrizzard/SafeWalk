@@ -8,7 +8,7 @@ auth_token = os.environ['TWILIO_AUTH_TOKEN']
 
 default_caller=os.environ['LG']
 default_receiver=os.environ['AP']
-default_message="I will walk with you on emPOWERwalk."
+default_message="I'll meet you at Twiiter in 10 minutes!"
 
 def send_sms(caller=default_caller, receiver=default_receiver, message=default_message):
     try:
@@ -20,7 +20,3 @@ def send_sms(caller=default_caller, receiver=default_receiver, message=default_m
         )
     except twilio.TwilioRestException as e:
         print e
-
-# if __name__ == "__main__":
-
-#     send_sms(default_caller, default_receiver, default_message)

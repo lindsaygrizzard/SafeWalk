@@ -8,27 +8,27 @@ html, body, #map-canvas { height: 100%; margin: 0; padding: 0; padding-bottom: 2
 }
 
 .rating {
-    margin-top: 15px;
-    margin-left: 5px;
+    margin-left: -2px;
     padding: 10px;
     font-size: 20px;
     color: tomato;
     text-align: center;
+    background-color: white;
 }
 
 div#cover{
     position:absolute;
     z-index:10;
-    margin: 5% 0;
+    margin: 4% 0;
     color: grey;
 }
 
-input[type='text']{
+input[type='text'], .rating {
     text-align: left;
     color: #bbb;
 }
 
-.controls, form {
+.controls, form, .rating {
 margin-top: 16px;
 border: 1px solid transparent;
 border-radius: 2px 0 0 2px;
@@ -70,6 +70,19 @@ font-size: 13px;
 font-weight: 300;
 }
 
+a {
+    color: black
+}
+
+a#rating {
+    text-decoration: none;
+    color: red;
+}
+
+a#rating:hover {
+    text-decoration: none;
+    color: tomato;
+}
 
 @media only screen and (max-width: 880px) {
     div#cover{

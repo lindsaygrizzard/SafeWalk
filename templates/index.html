@@ -37,7 +37,6 @@ function initialize() {
 
   google.maps.event.addListener(searchBox, 'places_changed', function() {
     var places = searchBox.getPlaces();
-    console.log(places)
 
     if (places.length == 0) {
       return;
@@ -53,6 +52,35 @@ function initialize() {
 
     markers.push(marker);
     bounds.extend(place.geometry.location)
+
+    console.log(markers + "markers")
+    console.log(markers[0].geometry)
+
+    var json = {
+      marker1: {
+        latitude: 'lat',
+        longitude: 'lng'
+      },
+      marker2: {
+        latitude: 'lat',
+        longitude: 'lng'
+      }
+    }
+
+    for (var i=0; i<2; i++) {
+      marker = "marker" + i
+      json.marker.lat = markers[i].geometry.location.A;
+      json.marker.lng = markers[i].geometry.location.F;
+    }
+
+
+      $.get(
+        url = "/register_location",
+        data = {json},
+        success = function (data) {
+          console.log("data string " + data);
+        }
+        )  
 
     map.fitBounds(bounds);
   });

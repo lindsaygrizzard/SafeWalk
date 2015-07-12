@@ -1,7 +1,7 @@
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from model import User, connect_to_db, db
+from model import User, Route, connect_to_db, db
 from call import send_sms
 from haversine import haversine
 
@@ -106,6 +106,19 @@ def process_logout():
     session.pop('email', None)
     flash('You successfully logged out!')
     return redirect("/")
+
+
+@app.route("/register_location")
+def register_route():
+
+    """Add user's origin and destination to Route table"""
+
+    origin = request.args.get("marker1")
+    destination = request.args.get("marker2")
+
+    print marker1, marker2
+
+
 
 # on call --- enter route data
 # not on call --- delete route data

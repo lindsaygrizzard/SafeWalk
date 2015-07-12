@@ -7,9 +7,6 @@
   margin-bottom: 0;
 }
 
-.emgerency {
-  background-color: red;
-}
 
 .head-nav::before,
 .head-nav::after {
@@ -44,6 +41,13 @@
   -webkit-transform: translateX(0px);
   -moz-transform: translateX(0px);
   transform: translateX(0px);
+}
+
+span.emgerency {
+  background-color: red;
+  max-width: 50px;
+  min-height: 35px;
+  font-size: 20px;
 }
 
 header {

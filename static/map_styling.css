@@ -1,13 +1,29 @@
 html, body, #map-canvas { height: 100%; margin: 0; padding: 0; padding-bottom: 20px;}
 
+.submit {
+    margin-top: 15px;
+    margin-left: 5px;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.rating {
+    margin-top: 15px;
+    margin-left: 5px;
+    padding: 10px;
+    font-size: 20px;
+    color: tomato;
+    text-align: center;
+}
 
 div#cover{
     position:absolute;
     z-index:10;
     margin: 5% 0;
+    color: grey;
 }
 
-input[type='submit']{
+input[type='text']{
     text-align: left;
     color: #bbb;
 }

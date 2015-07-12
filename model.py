@@ -31,19 +31,10 @@ class User(db.Model):
         old_average = self.get_rating() * self.get_walk_count()
         self.set_walk_count() # establish new walk is completed
 
-<<<<<<< HEAD
-    # db.relationship("rating_list", 
-                            # secondary=rating_list, 
-                            # backref=db.backref("rating_list", 
-                            #                     order_by=primary_user_id))
-=======
         new_total = old_average + new_score
         new_rating = new_total / self.get_walk_count()
-
         self.rating = new_rating
-        
         db.session.commit()
->>>>>>> 50ac168c71a07f0c6cab157e485d432d0de8d5a6
 
     def __repr__(self):
 

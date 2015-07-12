@@ -20,4 +20,5 @@ def send_sms(caller, receiver):
     except twilio.TwilioRestException as e:
         print e
 
-send_sms(default_caller, default_receiver)
+if __name__ == "__main__":
+    send_sms(default_caller, default_receiver)

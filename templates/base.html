@@ -19,9 +19,11 @@
     <a href ='/' class="head-nav" id="empower"> emPOWER walk </a> 
     {% if "email" not in session %}
         <a href ='/register' class="head-nav">Register </a>
-    {% endif %}
+            <a href = '/login' class="head-nav">Login </a> 
+    {% else %}
     <a href = '/logout' class="head-nav">Logout </a>
-    <a href = '/login' class="head-nav">Login </a> 
+    <a href = '/invite' class="head-nav">Invite a Friend</a>
+    {% endif %}
     <span class="emgerency"> <a href = '/' class="head-nav">EMERGENCY CALL </a> </span>
   <nav>
 </header>

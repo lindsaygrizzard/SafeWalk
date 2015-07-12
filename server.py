@@ -56,12 +56,13 @@ def process_signup():
     phone = request.form['phone']
     entered_pw = request.form['password']
     entered_pw2 = request.form['password2']
+    invite_code = request.form['invite']
 
     if User.query.filter_by(email=email).first():
         flash("A user already exists with this email")
         return render_template("register.html")
     else:
-        new_user = User(password=entered_pw, email=email, phone=phone)
+        new_user = User(password=entered_pw, email=email, phone=phone, invite_code=invite_code)
         db.session.add(new_user)
         db.session.commit()
         if not session.get('new_user.email'):
@@ -212,37 +213,30 @@ def finish_walk():
     # Rate walking companion #
 ##################################
 
-@app.route("/rating", methods=["POST", "GET"])
+@app.route("/rating", methods=["GET"])
 def rate_user():
 
-    if request.method == "POST":
-        user_email = session['email']
-        user = User.query.filter_by(email=user_email).first()
+    
+    return render_template("rating.html")
 
-        scored_user_id = request.form['scored_user_id']
-        scored_user_id = request.form['scored_user_id']
-        scored_user = User.query.get(int(scored_user_id))
-        safety_score = request.form['safety']
-        respect_score = request.form['respect']
+@app.route("/rating_process", methods=["POST"])
+def process_rating():
+    if request.method == "POST":
+
+        companion_id = request.form['companion']
+        companion_user = User.query.get(int(companion_id))
+        safety_score = request.form['safe-rating']
+        respect_score = request.form['respect-rating']
 
         overall_rating = (0.7 * int(safety_score)) + (0.3 * int(respect_score))
 
         print overall_rating
 
-        # article = Article.query.filter_by(title=title).first()
-        # for tag_name in tags:
-        #     print tag_name
-        #     tag = Tag.query.filter_by(tag_name=tag_name).first()
-        #     article.tag_list.append(tag)
-
-        # db.session.commit()
-        scored_user.set_rating(overall_rating)
+        companion_user.set_rating(overall_rating)
         db.session.commit()
 
         return redirect("/")
 
-    else:
-        return render_template("rating.html")
 
 ##################################
     # Invite a Friend #
@@ -252,6 +246,12 @@ def invite_friend():
     """Invite a friend to the app"""
     
     return render_template("invite.html")
+
+@app.route("/invite_process", methods=['POST'])
+def invite_sent():
+    """Confirm Friend is invited"""
+    
+    return render_template("invite_sent.html")
 
 if __name__ == "__main__":
     app.debug = True

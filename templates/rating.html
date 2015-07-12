@@ -8,9 +8,10 @@
 
 <div class="container">
     <h1 class = "title"> Rate your companion</h1>
-    <form action ="/rating" method = "POST">
+    <form action ="/rating_process" method = "POST">
         <fieldset>
             <h3>Friendliness Rating</h3>
+            <p><input type="hidden" name="companion" value="2"></p>
             <span class="respect-rating" id="respect-rating">
               <input type="radio" name="respect-rating" value="1"><i></i>
               <input type="radio" name="respect-rating" value="2"><i></i>

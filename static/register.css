@@ -68,6 +68,14 @@ input.password {
       background: rgba(255, 255, 255, 0.4) url(http://luismruiz.com/img/gemicon_message.png) no-repeat scroll 16px 16px;
 }
 
+input.invite{
+      background: rgba(255, 255, 255, 0.4) url(http://luismruiz.com/img/gemicon_message.png) no-repeat scroll 16px 16px;
+}
+
+input[type='text'] {
+    text-align: center;
+}
+
 ::-webkit-input-placeholder {
       color: #fff;
 }

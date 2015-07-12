@@ -22,7 +22,7 @@ class User(db.Model):
 
     #avg_rating = 0
 
-    db.relationship("rating_list", 
+    # db.relationship("rating_list", 
                             secondary=rating_list, 
                             backref=db.backref("rating_list", 
                                                 order_by=primary_user_id))

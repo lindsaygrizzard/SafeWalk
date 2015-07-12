@@ -132,7 +132,10 @@ def rate_user():
         db.session.add(new_rating_entry)
         db.session.commit() 
 
-    return redirect("/")
+        return redirect("/")
+
+    else:
+        return render_template("rating.html")
 
 
 

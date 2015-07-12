@@ -55,34 +55,26 @@ function initialize() {
     markers.push(marker);
     bounds.extend(place.geometry.location)
 
-    console.log(markers + "markers")
-    console.log(markers[0].geometry)
-
-    var json = {
+    var position = {
       marker1: {
-        latitude: 'lat',
-        longitude: 'lng'
+        latitude: markers[0].position.A,
+        longitude: markers[0].position.F
       },
       marker2: {
-        latitude: 'lat',
-        longitude: 'lng'
+        latitude: markers[1].position.A,
+        longitude: markers[1].position.F
       }
     }
 
-    for (var i=0; i<2; i++) {
-      marker = "marker" + i
-      json.marker.lat = markers[i].geometry.location.A;
-      json.marker.lng = markers[i].geometry.location.F;
-    }
-
-
-      $.get(
-        url = "/register_location",
-        data = {json},
-        success = function (data) {
+      $.ajax({
+        type: "POST",
+        url: "/register_location",
+        data: position,
+        dataType: "json",
+        success: function (data) {
           console.log("data string " + data);
         }
-        )  
+      })  
 
     map.fitBounds(bounds);
   });

@@ -13,6 +13,7 @@ class User(db.Model):
     phone = db.Column(db.String(15), nullable=True)
     rating = db.Column(db.Integer, default=5)
     walk_count = db.Column(db.Integer, default=0)
+    invite_code = db.Column(db.String(10), default="123abc")
 
     def get_walk_count(self):
  

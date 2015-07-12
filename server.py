@@ -14,14 +14,17 @@ def index():
 
     """Homepage."""
 
-    # if 'email' not in session:
-    #     flash('You must Log In or Register before viewing projects')
-    #     return redirect('/login')
-    # else:
-    #     flash('Hello %s' % session['email'])
+    if 'email' not in session:
+        flash('You must Log In or Register before viewing projects')
+        return redirect('/login')
+    else:
+        flash('Hello %s' % session['email'])
 
     return render_template('index.html')
 
+###########
+#how do I make another route that will activate call.py on the index page?
+###########
 
 ##################################
     #SIGN UP/ LOGIN/ SIGN OUT

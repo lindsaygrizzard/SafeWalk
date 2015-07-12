@@ -2,14 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-# FIX: Might need an Association table set up like this instead:
-# # Association Table of Ratings and Users
-# rating_list = db.Table('rating_list',
-#     db.Column("rating_id", db.Integer, autoincrement=True, primary_key=True),
-#     db.Column('primary_user_id', db.Integer, db.ForeignKey('users.user_id')),
-#     db.Column('seconday_user_id', db.Integer, db.ForeignKey('users.user_id'))
-# )
-
 class User(db.Model):
     """Table of users"""
 
@@ -23,6 +15,7 @@ class User(db.Model):
     walk_count = db.Column(db.Integer, default=0)
 
     def get_walk_count(self):
+ 
         return self.walk_count
 
     def set_walk_count(self):
@@ -32,10 +25,17 @@ class User(db.Model):
     def get_rating(self):
         return self.rating
 
-    def set_rating(self, new_score):
-        new_total = self.get_rating + new_score
-        average_score = new_total / self.get_walk_count
-        self.rating = average_score
+    def set_rating(self, new_score):        
+        """Sets new rating based on cummulative average"""
+        
+        old_average = self.get_rating() * self.get_walk_count()
+        self.set_walk_count() # establish new walk is completed
+
+        new_total = old_average + new_score
+        new_rating = new_total / self.get_walk_count()
+
+        self.rating = new_rating
+        
         db.session.commit()
 
     def __repr__(self):
@@ -64,25 +64,6 @@ class Route(db.Model):
 
         return "<Route route_id:  %s | user_id: %s>" % (self.route_id, self.route_user_id)
 
-
-# class Rating(db.Model):
-#     """Table of ratings"""
-
-#     __tablename__ = "ratings"
-
-#     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     rating_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-#     scored_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-#     score = db.Column(db.Integer)
-
-#     user = db.relationship("User", backref=db.backref("ratings", order_by=rating_id))
-
-#     def __repr__(self):
-
-#         """Provide helpful representation when printed"""
-
-#         return "<Rating rating_id:  %s >" % (self.rating_id)
-
 #############################
 def connect_to_db(app):
     """Connect the database to our Flask app."""
@@ -96,15 +77,14 @@ def connect_to_db(app):
 def seed_users():
     l = User(email = 'lindsay@gmail.com',
             password = 'abc',
-            phone = '+16617946615',
-            zipcode='94110')
+            phone = '+16617946615')
+    db.session.add(l)
 
     n = User(email = 'natalie@gmail.com',
             password = 'abc',
-            phone = '+14157024046',
-            zipcode='94110')
+            phone = '+14157024046')
+    db.session.add(n)
 
-    db.session.add_all([l, n])
     db.session.commit()
 
 if __name__ == "__main__":
@@ -115,3 +95,5 @@ if __name__ == "__main__":
     print "Created all tables"
     seed_users()
     print "Seeded 2 beta users."
+    u = User.query.get(1)
+    print "u references User 1"

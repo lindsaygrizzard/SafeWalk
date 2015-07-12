@@ -1,7 +1,7 @@
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from model import User, connect_to_db, db
+from model import connect_to_db, db, User, Route
 from call import send_sms
 from haversine import haversine
 
@@ -14,15 +14,17 @@ def index():
 
     """Homepage."""
 
-    # if 'email' not in session:
-    #     flash('You must Log In or Register before viewing projects')
-    #     return redirect('/login')
-    # else:
-    #     flash('Hello %s' % session['email'])
+    if 'email' not in session:
+        flash('You must Log In or Register before viewing projects')
+        return redirect('/login')
+    else:
+        flash('Hello %s' % session['email'])
 
-    
     return render_template('index.html')
 
+###########
+#how do I make another route that will activate call.py on the index page?
+###########
 
 ##################################
     #SIGN UP/ LOGIN/ SIGN OUT
@@ -34,31 +36,31 @@ def user_signup():
 
     """Sign up a new user."""
 
+    print "SESSION: ", session
     return render_template("/register.html")
 
 
-@app.route("/register-process", methods=['POST'])
+@app.route("/register-process", methods=["POST"])
 def process_signup():
 
     """Route to process login for users."""
 
-    entered_email = request.form['email']
+    email = request.form['email']
     phone = request.form['phone']
     entered_pw = request.form['password']
     entered_pw2 = request.form['password2']
 
-    print "entered_email", entered_email
-    print "entered_pw", entered_pw
-    print "entered_pw2", entered_pw2
-
-    if User.query.filter(User.email == entered_email).first():
-        flash("Hmm...we already have your email account on file. Please log in.")
-        return redirect("/login")
+    if User.query.filter_by(email=email).first():
+        flash("A user already exists with this email")
+        return render_template("register.html")
     else:
-        new_user = User(password=entered_pw, email=entered_email, phone=phone)
+        new_user = User(password=entered_pw, email=email, phone=phone)
         db.session.add(new_user)
         db.session.commit()
-        return redirect('/')
+        if not session.get('new_user.email'):
+            session['email'] = new_user.email
+        flash("You have been registered successfully.")
+        return redirect("/")
 
 
 @app.route("/login")
@@ -69,29 +71,28 @@ def user_login():
     return render_template("login.html")
 
 
-@app.route("/process_login", methods=["POST", "GET"])
+@app.route("/process_login", methods=["POST"])
 def process_login():
     """GET - displays a form that asks for email and password
         POST - collects that data and authenticates --> redirect to user profile"""
 
-    if request.method == "POST":
-        email = request.form["email"]
-        print "Email: ", email
-        password = request.form["password"]
-        user_object = User.query.filter(User.email == email).first()
-        print "USER OBECT", user_object
+    email = request.form["email"]
+    print "Email: ", email
+    password = request.form["password"]
+    user_object = User.query.filter(User.email == email).first()
+    print "USER OBECT", user_object
 
-        if user_object:
-            if user_object.password == password:
-                session["email"] = email
-                flash("You logged in successfully")
-                return redirect("/")
-            else:
-                flash("Incorrect password. Try again.")
-                return redirect("/login")
+    if user_object:
+        if user_object.password == password:
+            session["email"] = email
+            flash("You logged in successfully")
+            return redirect("/")
         else:
-            flash("We do not have this email on file. Click Register if you would like to create an account.")
+            flash("Incorrect password. Try again.")
             return redirect("/login")
+    else:
+        flash("We do not have this email on file. Click Register if you would like to create an account.")
+        return redirect("/login")
 
     return render_template("login.html")
         ###
@@ -106,6 +107,19 @@ def process_logout():
     session.pop('email', None)
     flash('You successfully logged out!')
     return redirect("/")
+
+
+@app.route("/register_location")
+def register_route():
+
+    """Add user's origin and destination to Route table"""
+
+    origin = request.args.get("marker1")
+    destination = request.args.get("marker2")
+
+    print marker1, marker2
+
+
 
 # on call --- enter route data
 # not on call --- delete route data

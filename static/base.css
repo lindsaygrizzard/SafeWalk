@@ -3,6 +3,9 @@
   box-sizing: border-box;
 }
 
+.alert {
+  margin-bottom: 0;
+}
 
 .head-nav::before,
 .head-nav::after {

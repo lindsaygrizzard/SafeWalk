@@ -19,7 +19,6 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
     phone = db.Column(db.String(15), nullable=True)
-    zipcode = db.Column(db.String(15), nullable=True)
 
     def __repr__(self):
 
@@ -76,7 +75,6 @@ class Route(db.Model):
 
 #         return "<Rating rating_id:  %s >" % (self.rating_id)
 
-
 #############################
 def connect_to_db(app):
     """Connect the database to our Flask app."""
@@ -84,7 +82,10 @@ def connect_to_db(app):
     # Configure to use our SQLite database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///empowerwalk.db'
     app.config['SQLALCHEMY_ECHO'] = False
+<<<<<<< HEAD
 
+=======
+>>>>>>> e6d1871df64070d98bb14a15da3b59d8aed3ecd8
     db.app = app
     db.init_app(app)
 

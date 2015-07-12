@@ -13,6 +13,8 @@ var map;
 var markers = [];
 var bounds;
 
+
+
 function initialize() {
   var mapOptions = {
     zoom: 14,
@@ -37,7 +39,6 @@ function initialize() {
 
   google.maps.event.addListener(searchBox, 'places_changed', function() {
     var places = searchBox.getPlaces();
-    console.log(places)
 
     if (places.length == 0) {
       return;
@@ -53,6 +54,35 @@ function initialize() {
 
     markers.push(marker);
     bounds.extend(place.geometry.location)
+
+    console.log(markers + "markers")
+    console.log(markers[0].geometry)
+
+    var json = {
+      marker1: {
+        latitude: 'lat',
+        longitude: 'lng'
+      },
+      marker2: {
+        latitude: 'lat',
+        longitude: 'lng'
+      }
+    }
+
+    for (var i=0; i<2; i++) {
+      marker = "marker" + i
+      json.marker.lat = markers[i].geometry.location.A;
+      json.marker.lng = markers[i].geometry.location.F;
+    }
+
+
+      $.get(
+        url = "/register_location",
+        data = {json},
+        success = function (data) {
+          console.log("data string " + data);
+        }
+        )  
 
     map.fitBounds(bounds);
   });
@@ -83,18 +113,61 @@ function show_position(p)
   markers.push(marker1)
   bounds.extend(pos)
   
+  /// start popup
+  var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h3 id="firstHeading" class="firstHeading">This is you</h3>'+
+      '<div id="bodyContent">'+
+      '<p>Find another person near you and contact them by ' +
+      'selecting their flag, deciding if you would like to walk with them'+
+      'and clicking the call button '+
+      '</p>'+
+      '</div>'+
+      '</div>';
+      //put overall rating in stars here!
+
+  var infowindow = new google.maps.InfoWindow({
+      content: contentString
+  });
+
+  google.maps.event.addListener(marker1, 'click', function() {
+    infowindow.open(map,marker1);
+  });
+  //end popup
+
 }
+
+
+////TODO:
+////// create other users in area 
+///// create click function that for pop up
+///// when call submit is pressed, pass users number into flask and return twilio call
+
+
+
+
 
 // render map on div
 google.maps.event.addDomListener(window, 'load', initialize);
 
 </script>
 
+
 {% endblock %}
 
 {% block content %}
   
   <input id="destination" class="controls" type="text" placeholder="Where are you headed?">
+
+  <div id="cover">
+    <form action ="/" method = "POST">
+      <input id="destination" class="controls" type="submit" value="Message a Walking Buddy!">
+    </form>
+  </div>
+
+
+
   <div id="map-canvas"></div>
 
 {% endblock %}

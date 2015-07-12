@@ -46,6 +46,14 @@ class Rating(db.Model):
 
         return "<Rating rating_id:  %s >" % (self.rating_id)
 
+# FIX: Might need an Association table set up like this instead:
+# # Association Table of Ratings and Users
+# rating_list = db.Table('rating_list',
+#     db.Column("rating_id", db.Integer, autoincrement=True, primary_key=True),
+#     db.Column('primary_user_id', db.Integer, db.ForeignKey('users.user_id')),
+#     db.Column('seconday_user_id', db.Integer, db.ForeignKey('users.user_id'))
+# )
+
 #############################
 def connect_to_db(app):
     """Connect the database to our Flask app."""

@@ -7,6 +7,10 @@
   margin-bottom: 0;
 }
 
+.emgerency {
+  background-color: red;
+}
+
 .head-nav::before,
 .head-nav::after {
   display: inline-block;

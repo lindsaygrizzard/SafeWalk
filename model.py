@@ -20,12 +20,10 @@ class User(db.Model):
     password = db.Column(db.String(64), nullable=False)
     phone = db.Column(db.String(15), nullable=True)
 
-    # avg_rating = 
-
-    db.relationship("rating_list", 
-                            secondary=rating_list, 
-                            backref=db.backref("rating_list", 
-                                                order_by=primary_user_id))
+    # db.relationship("rating_list", 
+                            # secondary=rating_list, 
+                            # backref=db.backref("rating_list", 
+                            #                     order_by=primary_user_id))
 
     def __repr__(self):
 

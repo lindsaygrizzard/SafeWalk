@@ -20,6 +20,13 @@ class User(db.Model):
     password = db.Column(db.String(64), nullable=False)
     phone = db.Column(db.String(15), nullable=True)
 
+    avg_rating = 
+
+    db.relationship("rating_list", 
+                            secondary=rating_list, 
+                            backref=db.backref("rating_list", 
+                                                order_by=primary_user_id))
+
     def __repr__(self):
 
         """Provide helpful representation when printed"""
@@ -90,14 +97,13 @@ def seed_users():
             password = 'abc',
             phone = '+16617946615',
             zipcode='94110')
-    db.session.add(l)
 
     n = User(email = 'natalie@gmail.com',
             password = 'abc',
             phone = '+14157024046',
             zipcode='94110')
 
-    db.session.add(n)
+    db.session.add_all([l, n])
     db.session.commit()
 
 if __name__ == "__main__":

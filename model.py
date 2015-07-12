@@ -24,9 +24,11 @@ class User(db.Model):
     def rating_avg(self):
         rating_sum = 0
         for rating in self.ratings:
-            rating_sum += rating
+            rating_sum += rating.score
 
-        return rating_sum / len(self.ratings)
+        rating_avg = rating_sum / len(self.ratings)
+        
+        return rating_avg
 
 
 class Rating(db.Model):
@@ -37,7 +39,7 @@ class Rating(db.Model):
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     rating_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     scored_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    overall_rating = db.Column(db.Integer)
+    score = db.Column(db.Integer)
 
     user = db.relationship("User", backref=db.backref("ratings", order_by=rating_id))
 

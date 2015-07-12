@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/static/register_styles.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class = "title"> Rate your companion </h1>
+        <form action ="/rating" method = "POST">
+            <fieldset>
+                <p><label class="respect">Respect </label>
+                    <input type="text" name="respect"> </p>
+                <p><label class="safety">Safety </label>
+                    <input type="text" name="safety"> </p>
+                <p><input type="submit" value="Rate this Walk"></p>
+        </form>
+</div>
+
+{% endblock %}s

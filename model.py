@@ -4,6 +4,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
+    """Table of users"""
 
     __tablename__ = "users"
 
@@ -19,6 +20,42 @@ class User(db.Model):
 
         return "<User user_id:  %s | email: %s>" % (self.user_id, self.email)
 
+    @property
+    def rating_avg(self):
+        rating_sum = 0
+        for rating in self.ratings:
+            rating_sum += rating.score
+
+        rating_avg = rating_sum / len(self.ratings)
+        
+        return rating_avg
+
+
+class Rating(db.Model):
+    """Table of ratings"""
+
+    __tablename__ = "ratings"
+
+    rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    rating_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    scored_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    score = db.Column(db.Integer)
+
+    user = db.relationship("User", backref=db.backref("ratings", order_by=rating_id))
+
+    def __repr__(self):
+
+        """Provide helpful representation when printed"""
+
+        return "<Rating rating_id:  %s >" % (self.rating_id)
+
+# FIX: Might need an Association table set up like this instead:
+# # Association Table of Ratings and Users
+# rating_list = db.Table('rating_list',
+#     db.Column("rating_id", db.Integer, autoincrement=True, primary_key=True),
+#     db.Column('primary_user_id', db.Integer, db.ForeignKey('users.user_id')),
+#     db.Column('seconday_user_id', db.Integer, db.ForeignKey('users.user_id'))
+# )
 
 #############################
 def connect_to_db(app):

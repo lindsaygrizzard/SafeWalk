@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
+
 body {
       background:#222 url(http://img00.deviantart.net/903b/i/2012/224/6/2/path_at_night_park_by_martineriksen-d5as99p.jpg)no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -15,11 +15,11 @@ h1 {
 form {
     margin-left:auto;
     margin-right:auto;
-    margin-top: 7%;
-    width: 443px;
+    margin-top: 4%;
+    width: 40%;
     height: 30%;
     padding:30px;
-    border: 1px solid rgba(0,0,0,.5);
+    border: 1px solid rgba(0,0,0,.2);
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -36,7 +36,7 @@ form {
 
 input {
     width: 100%;
-    height: 58px;
+    height: 55px;
     border: 1px solid rgba(255,255,255,.4);
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -48,28 +48,24 @@ input {
     font-family: 'Source Sans Pro', sans-serif;
     font-size:18px;
     color:#fff;
-    padding-left:20px;
-    padding-right:20px;
-    margin-bottom:20px;
+    margin-bottom:10px;
+    text-align: center;
 }
 
 input[type=submit] {
     cursor:pointer;
 }
 
-input.name {
+input.phone {
       background: rgba(255, 255, 255, 0.4) url(http://luismruiz.com/img/gemicon_name.png) no-repeat scroll 16px 16px; 
-      padding-left:45px;
 }
 
 input.email {
       background: rgba(255, 255, 255, 0.4) url(http://luismruiz.com/img/gemicon_email.png) no-repeat scroll 16px 20px;
-      padding-left:45px;
 }
 
 input.password {
       background: rgba(255, 255, 255, 0.4) url(http://luismruiz.com/img/gemicon_message.png) no-repeat scroll 16px 16px;
-      padding-left:45px;
 }
 
 ::-webkit-input-placeholder {
@@ -153,8 +149,25 @@ input:focus, textarea:focus {
    }
 
 
-@media only screen and (max-width: 580px) {
+@media only screen and (max-width: 480px) {
+    form {
+        width: 95%;
+    }
     h1 {
-        margin: 20% 0 20% 0;
+        margin: 15% 0 10% 0;
     }
 }
+@media only screen and (min-width: 480px) {
+    form {
+        width: 70%;
+    }
+}
+
+@media only screen and (min-width: 780px) {
+    form {
+        width: 45%;
+    }
+}
+
+
+

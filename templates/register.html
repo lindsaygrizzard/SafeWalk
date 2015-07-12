@@ -1,26 +1,22 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="/static/register_styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/register.css">
 {% endblock %}
 
 {% block content %}
 
 <div class="container">
-    <h1 class = "title"> Register! </h1>
-        <form action ="/register-process" method = "POST">
-            <fieldset>
-                <p><label class="email">Email </label>
-                    <input type="text" name="email"> </p>
-                <p><label class="phone">Phone </label>
-                    <input type="text" name="phone"> </p>
-                <p><label class="password">Password: </label>
-                    <input type="password" name="password">
-                <p><label class="password">Password: </label>
-                    <input type="password" name="password2">
-                <p><input type="submit" value="Sign Up"></p>
-        </form>
-    </h3>
-</div>
+    <h1 class = "title"> Register </h1>
+    <form action ="/register-process" method = "POST">
+        <fieldset>
+            <input name="email" placeholder="What is your email?" class="email" type="email" required />
+            <input name="phone" placeholder="What is your phone number" class="phone" type="phone" required />
+            <input name="password" placeholder="What is your password?" class="password" type="password" required />
+            <input name="password" placeholder="What is your password again?" class="password" type="password" required/>
+            <p><input type="submit" value="Log In"></p>
+        </fieldset>
+    </form>
+<div>
 
 {% endblock %}

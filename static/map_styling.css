@@ -79,6 +79,11 @@ a#rating {
     color: red;
 }
 
+a#rating:hover {
+    text-decoration: none;
+    color: tomato;
+}
+
 @media only screen and (max-width: 880px) {
     div#cover{
         position:absolute;

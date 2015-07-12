@@ -199,12 +199,13 @@ def rate_user():
 
         print overall_rating
 
-        new_rating_entry = Rating(rating_user_id=user, 
-                            scored_user_id=scored_user_id, 
-                            overall_rating=int(overall_rating))
+        # article = Article.query.filter_by(title=title).first()
+        # for tag_name in tags:
+        #     print tag_name
+        #     tag = Tag.query.filter_by(tag_name=tag_name).first()
+        #     article.tag_list.append(tag)
 
-        db.session.add(new_rating_entry)
-        db.session.commit() 
+        # db.session.commit()
 
         return redirect("/")
 

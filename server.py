@@ -2,6 +2,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from model import User, connect_to_db, db
+from call import send_sms
 
 app = Flask(__name__)
 app.secret_key = 'public key'
@@ -17,6 +18,8 @@ def index():
     #     return redirect('/login')
     # else:
     #     flash('Hello %s' % session['email'])
+
+    
     return render_template('index.html')
 
 

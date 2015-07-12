@@ -167,13 +167,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
   </div>
 
   <script>
-$('#cover').on('click', function(evt){
-    var project_id = $($(this).context).data().id;
-    var url = '/remove_project/'+project_id;
-    $.post(url, function(data){
-      $("#"+data.project_id).remove();
-    });
-});
+
+  $.post( "index.html", $( "#destination" ).serialize() );
+
   </script>
 
 

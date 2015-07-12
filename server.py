@@ -258,6 +258,12 @@ def invite_friend():
     
     return render_template("invite.html")
 
+@app.route("/invite_process", methods=['POST'])
+def invite_sent():
+    """Confirm Friend is invited"""
+    
+    return render_template("invite_sent.html")
+
 if __name__ == "__main__":
     app.debug = True
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False

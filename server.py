@@ -137,12 +137,30 @@ def match_walkers():
             other_user.destination_lng < user_destination_lng + lng_range and
             other_user.destination_lng > user_destination_lng - lng_range):
             # calculate distance using haversine and store dist and match id
-            return "anything"
+
+            other_user_origin = (other_user.origin_lat, other_user.origin_lng)
+            other_user_destination = (other_user.destination_lat, other_user.destination_lng)
+            user_origin = (user_origin_lat, user_origin_lng)
+            user_destination = (user_destination_lat, user_destination_lng)
 
 
+            origin_difference = haversine(other_user_origin, user_origin)
+            destination_difference = haversine(other_user_destination, user_destination)
+
+            total = origin_difference + destination_difference
+            matches.append((total, other_user_id))
+
+    matches.sort()
+
+    close_matches = []
+    for i in range(4)
+        user_id = matches[i][1]
+        match_phone = query_for_match_phone
+        match_name = query_for_match_name
+        match_photo = query_for_match_photo
+        close_matches.append((user_id, match_phone, match_name, match_photo))
 
 
-    # sort matches by dist
     # query by match id (in order - lowest 5) - get contacts --> initialize twilio contact
 
 

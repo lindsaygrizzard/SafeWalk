@@ -20,7 +20,7 @@ class User(db.Model):
     password = db.Column(db.String(64), nullable=False)
     phone = db.Column(db.String(15), nullable=True)
 
-    avg_rating = 
+    #avg_rating = 0
 
     db.relationship("rating_list", 
                             secondary=rating_list, 

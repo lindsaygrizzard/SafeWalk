@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from model import User, connect_to_db, db
 from call import send_sms
+from haversine import haversine
 
 app = Flask(__name__)
 app.secret_key = 'public key'
@@ -124,18 +125,25 @@ def match_walkers():
     lat_range = .00724
     lng_range = .00943
 
-    min_dist = -1
-    match_id = 0
+    matches = []
 
     for other_user in route_table:
         if (other_user.origin_lat < user_origin_lat + lat_range and
             other_user.origin_lat > user_origin_lat - lat_range and
             other_user.origin_lng < user_origin_lng + lng_range and
-            other_user.origin_lng > user_origin_lng - lng_range):
-            # calculate distance using haversine
-            # check to see if it's less than min - if so reset min/match_id - keep checking
+            other_user.origin_lng > user_origin_lng - lng_range and
+            other_user.destination_lat < user_destination_lat + lat_range and
+            other_user.destination_lat > user_destination_lat - lat_range and
+            other_user.destination_lng < user_destination_lng + lng_range and
+            other_user.destination_lng > user_destination_lng - lng_range):
+            # calculate distance using haversine and store dist and match id
+            return "anything"
 
-    # query by match id - get contacts --> initialize twilio contact
+
+
+
+    # sort matches by dist
+    # query by match id (in order - lowest 5) - get contacts --> initialize twilio contact
 
 
 

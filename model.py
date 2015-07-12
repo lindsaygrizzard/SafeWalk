@@ -30,6 +30,18 @@ class User(db.Model):
         
         return rating_avg
 
+class Route(db.Model):
+    """Table of routes"""
+
+    __tablename__ = "routes"
+
+    route_id =  db.Column(db.Integer, autoincrement=True, primary_key=True)
+    route_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    start_lat = db.Column(db.Float)
+    start_long = db.Column(db.Float)
+    end_lat = db.Column(db.Float)
+    end_long = db.Column(db.Float)
+
 
 class Rating(db.Model):
     """Table of ratings"""

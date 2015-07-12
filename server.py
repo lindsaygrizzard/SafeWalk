@@ -106,6 +106,40 @@ def process_logout():
     flash('You successfully logged out!')
     return redirect("/")
 
+# on call --- enter route data
+# not on call --- delete route data
+
+
+@app.route("/match_walkers")
+def match_walkers():
+
+    """Filter on call users to match together based on proximity of origin and destination"""
+
+    user_origin_lat = 5
+    user_origin_lng = 4
+
+    user_destination_lat = 5
+    user_destination_lng = 4
+
+    lat_range = .00724
+    lng_range = .00943
+
+    min_dist = -1
+    match_id = 0
+
+    for other_user in route_table:
+        if (other_user.origin_lat < user_origin_lat + lat_range and
+            other_user.origin_lat > user_origin_lat - lat_range and
+            other_user.origin_lng < user_origin_lng + lng_range and
+            other_user.origin_lng > user_origin_lng - lng_range):
+            # calculate distance using haversine
+            # check to see if it's less than min - if so reset min/match_id - keep checking
+
+    # query by match id - get contacts --> initialize twilio contact
+
+
+
+
 ##################################
     # Rate walking companion #
 ##################################

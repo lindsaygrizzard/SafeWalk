@@ -21,8 +21,13 @@ twilio
 jinja
 <h6>
 
+<h2>Screenshots</h2>
+
 ![image](/static/Map.png)
+
 ![image](/static/Register.png)
+
 ![image](/static/Invite.png)
+
 ![image](/static/Rating.png)
 
